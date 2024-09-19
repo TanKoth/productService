@@ -13,7 +13,7 @@ public class CreateProductRequestDto {
     private String description;
     private Double price;
     private String imageUrl;
-    private Category categoryName;
+    private String categoryName;
 
     public Product toProduct(){
 
@@ -22,7 +22,10 @@ public class CreateProductRequestDto {
         product.setDescription(this.description);
         product.setPrice(this.price);
         product.setImageUrl(this.imageUrl);
-        product.setCategory(this.categoryName);
+
+        Category category = new Category();
+        category.setName(this.categoryName);
+        product.setCategory(category);
 
         return product;
     }

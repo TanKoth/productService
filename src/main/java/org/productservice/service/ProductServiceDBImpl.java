@@ -1,11 +1,13 @@
 package org.productservice.service;
 
+import org.productservice.model.Category;
 import org.productservice.model.Product;
 import org.productservice.repository.CategoryRepository;
 import org.productservice.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceDBImpl implements ProductService{
@@ -22,7 +24,24 @@ public class ProductServiceDBImpl implements ProductService{
 
     @Override
     public Product createProduct(Product product) {
-        return null;
+        String cateoryName = product.getCategory().getName();
+        Optional<Category> categoryOptional = categoryRepository.findByName(cateoryName);
+        Category toBeInProduct = null;
+
+        if(categoryOptional.isEmpty()){
+            Category toSaveCategory = new Category();
+            toSaveCategory.setName(cateoryName);
+
+
+            toBeInProduct = categoryRepository.save(toSaveCategory);
+        }else{
+            toBeInProduct = categoryOptional.get();
+        }
+        product.setCategory(toBeInProduct);
+        Product savedProduct = productRepository.save(product);
+        System.out.println("Printd successfully");
+
+        return savedProduct;
     }
 
     @Override
