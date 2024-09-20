@@ -1,5 +1,6 @@
 package org.productservice.controller;
 import org.productservice.dto.*;
+import org.productservice.exception.ProductNotFoundException;
 import org.productservice.model.Product;
 import org.productservice.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +49,13 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public PatchProductResponseDto updateProduct(@PathVariable("id") Long id, @RequestBody CreateProductDto createProductDto){
+    public PatchProductResponseDto updateProduct(@PathVariable("id") Long id, @RequestBody CreateProductDto createProductDto) throws ProductNotFoundException {
 
-        return null;
+        Product product = productService.partialUpdateProduct(id, createProductDto.toProduct());
+
+        PatchProductResponseDto patchProductResponseDto = new PatchProductResponseDto();
+        patchProductResponseDto.setProduct(GetProductDto.from(product));
+        return patchProductResponseDto;
     }
 
     @PutMapping("")
