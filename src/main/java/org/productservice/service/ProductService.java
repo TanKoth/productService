@@ -11,7 +11,11 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
+    Product findById(Long id) throws ProductNotFoundException;
+
     Product partialUpdateProduct(Long productId, Product product) throws ProductNotFoundException;
+
+    Product deleteProduct(Long id) throws ProductNotFoundException;
 
 
 }

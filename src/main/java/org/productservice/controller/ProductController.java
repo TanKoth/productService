@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -32,20 +35,29 @@ public class ProductController {
     }
     @GetMapping("")
     public GetAllProductResponseDto getAllProduct(){
+        List<Product> product = productService.getAllProducts();
+        GetAllProductResponseDto getAllProductResponseDto = new GetAllProductResponseDto();
 
-        return null;
+        List<GetProductDto> getProductDto = new ArrayList<>();
+        for(Product products: product){
+            getProductDto.add(GetProductDto.from(products));
+        }
+
+        getAllProductResponseDto.setProducts(getProductDto);
+        return getAllProductResponseDto;
     }
 
     @GetMapping("/{id}")
-    public String getSingleProduct(@PathVariable("id") Long id){
+    public GetProductDto getSingleProduct(@PathVariable("id") Long id) throws ProductNotFoundException{
+       Product product = productService.findById(id);
+       GetProductDto getProductDto = GetProductDto.from(product);
 
-        return null;
+       return getProductDto;
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Long id){
-
-
+    public void deleteProduct(@PathVariable("id") Long id) throws ProductNotFoundException{
+        productService.deleteProduct(id);
     }
 
     @PatchMapping("/{id}")

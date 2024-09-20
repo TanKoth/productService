@@ -57,11 +57,22 @@ public class ProductServiceDBImpl implements ProductService{
     }
 
     @Override
+    public Product findById(Long id) throws ProductNotFoundException {
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isEmpty()){
+            throw new ProductNotFoundException("Product not found with specific id");
+        }
+        Product productInfo = product.get();
+
+        return productInfo;
+    }
+
+    @Override
     public Product partialUpdateProduct(Long productId, Product product)throws ProductNotFoundException{
 
         Optional<Product> productOptional = productRepository.findById(productId);
         if(productOptional.isEmpty()){
-            throw new ProductNotFoundException();
+            throw new ProductNotFoundException("Product not found with specific id");
         }
         Product producToUpdate = productOptional.get();
         if(product.getDescription() != null){
@@ -78,5 +89,16 @@ public class ProductServiceDBImpl implements ProductService{
             producToUpdate.setCategory(toBeInProduct);
         }
         return productRepository.save(producToUpdate);
+    }
+
+    @Override
+    public Product deleteProduct(Long id) throws ProductNotFoundException {
+
+        Optional<Product> product = productRepository.findById(id);
+        if(product.isEmpty()){
+            throw new ProductNotFoundException("Product not found with specific id");
+        }
+        productRepository.delete(product.get());
+        return null;
     }
 }
