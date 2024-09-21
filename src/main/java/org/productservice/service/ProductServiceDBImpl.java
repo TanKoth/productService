@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class ProductServiceDBImpl implements ProductService{
+    //private static final Logger logger = Logger.getLogger(ProductServiceDBImpl.class.getName());
 
     private ProductRepository productRepository;
 
@@ -60,6 +63,7 @@ public class ProductServiceDBImpl implements ProductService{
     public Product findById(Long id) throws ProductNotFoundException {
         Optional<Product> product = productRepository.findById(id);
         if(product.isEmpty()){
+            //logger.log(Level.INFO, "Product not found with specific id");
             throw new ProductNotFoundException("Product not found with specific id");
         }
         Product productInfo = product.get();
@@ -98,7 +102,9 @@ public class ProductServiceDBImpl implements ProductService{
         if(product.isEmpty()){
             throw new ProductNotFoundException("Product not found with specific id");
         }
-        productRepository.delete(product.get());
-        return null;
+        Product productToDelete = product.get();;
+        productRepository.delete(productToDelete);
+
+        return productToDelete;
     }
 }
