@@ -1,6 +1,5 @@
-package org.productservice.dto;
+package org.productservice.dto.productDto;
 
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 import org.productservice.model.Category;

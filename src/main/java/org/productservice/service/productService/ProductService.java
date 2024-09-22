@@ -1,4 +1,4 @@
-package org.productservice.service;
+package org.productservice.service.productService;
 
 import org.productservice.exception.ProductNotFoundException;
 import org.productservice.model.Product;

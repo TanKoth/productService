@@ -1,8 +1,7 @@
-package org.productservice.dto;
+package org.productservice.dto.productDto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.productservice.model.Category;
 import org.productservice.model.Product;
 
 @Getter

@@ -1,4 +1,4 @@
-package org.productservice.service;
+package org.productservice.service.productService;
 
 import org.productservice.exception.ProductNotFoundException;
 import org.productservice.model.Category;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 @Service
 public class ProductServiceDBImpl implements ProductService{
-    //private static final Logger logger = Logger.getLogger(ProductServiceDBImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(ProductServiceDBImpl.class.getName());
 
     private ProductRepository productRepository;
 
@@ -66,6 +66,10 @@ public class ProductServiceDBImpl implements ProductService{
             //logger.log(Level.INFO, "Product not found with specific id");
             throw new ProductNotFoundException("Product not found with specific id");
         }
+        if (product.get().isDeleted()) {
+            logger.log(Level.INFO, "Product is deleted");
+            throw new ProductNotFoundException("Product is deleted");
+        }
         Product productInfo = product.get();
 
         return productInfo;
@@ -103,7 +107,9 @@ public class ProductServiceDBImpl implements ProductService{
             throw new ProductNotFoundException("Product not found with specific id");
         }
         Product productToDelete = product.get();;
-        productRepository.delete(productToDelete);
+        productToDelete.setDeleted(true);
+        productRepository.save(productToDelete);
+        //productRepository.delete(productToDelete);
 
         return productToDelete;
     }

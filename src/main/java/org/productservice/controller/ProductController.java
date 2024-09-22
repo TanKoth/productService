@@ -1,10 +1,8 @@
 package org.productservice.controller;
-import org.productservice.dto.*;
+import org.productservice.dto.productDto.*;
 import org.productservice.exception.ProductNotFoundException;
 import org.productservice.model.Product;
-import org.productservice.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.productservice.service.productService.ProductService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
