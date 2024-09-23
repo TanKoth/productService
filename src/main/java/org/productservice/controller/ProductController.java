@@ -3,16 +3,20 @@ import org.productservice.dto.productDto.*;
 import org.productservice.exception.ProductNotFoundException;
 import org.productservice.model.Product;
 import org.productservice.service.productService.ProductService;
+import org.productservice.service.productService.ProductServiceDBImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 
+    private static final Logger logger = Logger.getLogger(ProductServiceDBImpl.class.getName());
 
     private ProductService productService;
 
@@ -54,8 +58,14 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Long id) throws ProductNotFoundException{
-        productService.deleteProduct(id);
+    public void deleteProduct(@PathVariable("id") Long id) {
+        try{
+            productService.deleteProduct(id);
+            logger.log(Level.INFO,"Category with specific id : " +id +" is Deleted Successfully");
+        }catch (Exception e){
+            logger.log(Level.INFO,"Category is deleted already",e);
+
+        }
     }
 
     @PatchMapping("/{id}")

@@ -55,7 +55,7 @@ public class CategoryController {
         try{
             category = categoryService.findById(id);
         }catch (Exception e){
-            logger.log(Level.INFO,"Category is deleted");
+            logger.log(Level.INFO,"Category not found by id :" + id, e);
         }
         GetCategoryDto getCategoryDto = GetCategoryDto.from(category);
 
@@ -66,8 +66,9 @@ public class CategoryController {
     public void deletCategory(@PathVariable("id") Long id){
         try{
             categoryService.deleteCategory(id);
+            logger.log(Level.INFO,"Category with specific id : " + id + " is Deleted Successfully");
         }catch(Exception e){
-            logger.log(Level.INFO,"Category is deleted");
+            logger.log(Level.INFO,"Category is deleted already",e);
         }
     }
 
