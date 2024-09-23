@@ -66,10 +66,10 @@ public class ProductServiceDBImpl implements ProductService{
             //logger.log(Level.INFO, "Product not found with specific id");
             throw new ProductNotFoundException("Product not found with specific id");
         }
-        if (product.get().isDeleted()) {
+       /* if (product.get().isDeleted()) {
             logger.log(Level.INFO, "Product is deleted");
             throw new ProductNotFoundException("Product is deleted");
-        }
+        }*/
         Product productInfo = product.get();
 
         return productInfo;
@@ -107,9 +107,9 @@ public class ProductServiceDBImpl implements ProductService{
             throw new ProductNotFoundException("Product not found with specific id");
         }
         Product productToDelete = product.get();;
-        productToDelete.setDeleted(true);
-        productRepository.save(productToDelete);
-        //productRepository.delete(productToDelete);
+        //productToDelete.setDeleted(true);
+        //productRepository.save(productToDelete);
+        productRepository.delete(productToDelete);
 
         return productToDelete;
     }

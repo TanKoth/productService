@@ -40,10 +40,10 @@ public class CategoryServiceDBImp implements CategoryService{
         if(category.isEmpty()){
             throw new CategoryNotFoundException("Category not found");
         }
-        if(category.get().isDeleted()){
+        /*if(category.get().isDeleted()){
             logger.log(Level.INFO,"Category id Deleted");
             throw new CategoryNotFoundException("Category id Deleted");
-        }
+        }*/
         Category categoryInfo = category.get();
 
         return categoryInfo;
@@ -56,8 +56,9 @@ public class CategoryServiceDBImp implements CategoryService{
             throw new CategoryNotFoundException("Category not found");
         }
         Category categoryToDelete = category.get();
-        categoryToDelete.setDeleted(true);
-        categoryRepository.save(categoryToDelete);
+        //categoryToDelete.setDeleted(true);
+        //categoryRepository.save(categoryToDelete);
+        categoryRepository.delete(categoryToDelete);
 
         return categoryToDelete;
     }
