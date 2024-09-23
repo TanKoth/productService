@@ -12,8 +12,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Override
     Category save(Category category);
 
-
-    Optional<Category> delete(Long id);
+    @Override
+   void delete(Category category);
 
     Optional<Category> findByName(String name);
 
