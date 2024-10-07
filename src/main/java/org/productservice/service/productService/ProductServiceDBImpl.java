@@ -5,6 +5,7 @@ import org.productservice.model.Category;
 import org.productservice.model.Product;
 import org.productservice.repository.CategoryRepository;
 import org.productservice.repository.ProductRepository;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +21,14 @@ public class ProductServiceDBImpl implements ProductService{
 
     private CategoryRepository categoryRepository;
 
-    public ProductServiceDBImpl(ProductRepository productRepository, CategoryRepository categoryRepository){
+    private RedisTemplate<String,Object> redisTemplate;
+
+    public ProductServiceDBImpl(ProductRepository productRepository, CategoryRepository categoryRepository, RedisTemplate redisTemplate){
 
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.redisTemplate = redisTemplate;
+
     }
 
     @Override
@@ -61,6 +66,12 @@ public class ProductServiceDBImpl implements ProductService{
 
     @Override
     public Product findById(Long id) throws ProductNotFoundException {
+        // Fetch product from redis
+       /*Product redisProduct = (Product) redisTemplate.opsForHash().get("PRODUCT", "PRODUCT_" + id);
+        if(redisProduct != null){
+            //CACHE HIT
+            return redisProduct;
+        }*/
         Optional<Product> product = productRepository.findById(id);
         if(product.isEmpty()){
             //logger.log(Level.INFO, "Product not found with specific id");
@@ -71,7 +82,8 @@ public class ProductServiceDBImpl implements ProductService{
             throw new ProductNotFoundException("Product is deleted");
         }*/
         Product productInfo = product.get();
-
+        // CACHE MISS
+        //redisTemplate.opsForHash().put("PRODUCT","PRODUCT_" + id,productInfo);
         return productInfo;
     }
 

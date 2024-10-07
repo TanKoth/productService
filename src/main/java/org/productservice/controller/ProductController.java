@@ -30,7 +30,11 @@ public class ProductController {
 
 
     @PostMapping("")
-    public CreateProductResponseDto createProduct(@RequestBody CreateProductRequestDto createProductRequestDto){
+    public CreateProductResponseDto createProduct(@RequestHeader("Authorization") String token, @RequestBody CreateProductRequestDto createProductRequestDto){
+        boolean isAunthicated = restTemplate.getForObject("http://userService/auth/validate?token=" + token, Boolean.class);
+        if(!isAunthicated){
+            return null;
+        }
         Product product = productService.createProduct(createProductRequestDto.toProduct());
         CreateProductResponseDto createProductResponseDto = CreateProductResponseDto.fromProduct(product);
         return createProductResponseDto;
