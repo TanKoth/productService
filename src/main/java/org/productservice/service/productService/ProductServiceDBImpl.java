@@ -8,6 +8,7 @@ import org.productservice.repository.ProductRepository;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.net.ServerSocket;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -66,6 +67,15 @@ public class ProductServiceDBImpl implements ProductService{
 
     @Override
     public Product findById(Long id) throws ProductNotFoundException {
+        int port = 0;
+        try {
+            ServerSocket serverSocket = new ServerSocket(0);
+            port = serverSocket.getLocalPort();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("Got the request here : " + port);
+
         // Fetch product from redis
        /*Product redisProduct = (Product) redisTemplate.opsForHash().get("PRODUCT", "PRODUCT_" + id);
         if(redisProduct != null){
